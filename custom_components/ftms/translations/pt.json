@@ -1,0 +1,282 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Selecionar uma máquina de fitness",
+        "description": "Selecione uma máquina de fitness para configurar a partir da lista abaixo.",
+        "data": {
+          "address": "Máquinas de fitness descobertas:"
+        }
+      },
+      "confirm": {
+        "title": "Selecionar modo de descoberta",
+        "description": "Para monitorizar os parâmetros da sua máquina de fitness **{name}**, será estabelecida uma ligação via Bluetooth.\n\nCertifique-se de que não existem dispositivos ligados à mesma, como por exemplo software de treino de terceiros num dispositivo móvel.\n\nDevido ao facto de a máquina de fitness poder não fornecer alguns dados de treino ou fornecer valores fictícios, é possível tentar determiná-los automaticamente. Para isso, é necessário treinar de forma intensa neste momento num dos programas. Após esta fase, poderá alterar esta lista.",
+        "data": {
+          "discovery": "Modo de descoberta de dados de treino:"
+        }
+      },
+      "information": {
+        "title": "Conjunto de dados de treino",
+        "description": "Verifique e, se necessário, altere o conjunto de dados de treino da sua máquina de fitness. Esta é a lista de sensores criados durante a inicialização do dispositivo. Poderá alterá-la manualmente no futuro.",
+        "data": {
+          "sensors": "Selecionar dados de treino:"
+        }
+      }
+    },
+    "progress": {
+      "connecting": "A ligar, a ler informações do dispositivo e capacidades da máquina de fitness...",
+      "discovering": "Recolha automática de informações de treino...",
+      "closing": "A fechar a ligação e a guardar os dados..."
+    },
+    "abort": {
+      "not_supported": "Dispositivo não suportado.",
+      "already_in_progress": "O assistente de configuração do dispositivo já está em execução.",
+      "already_configured": "O dispositivo já está configurado.",
+      "no_devices_found": "Não foram encontrados dispositivos para configurar.",
+      "connection_failed": "Falha ao ligar ao dispositivo. Certifique-se de que está ligado e dentro do alcance e tente novamente."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Conjunto de dados de treino",
+        "description": "Configuração do conjunto de sensores de dados de treino.",
+        "data": {
+          "sensors": "Selecionar dados de treino:"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "cadence_average": {
+        "name": "Cadência média"
+      },
+      "cadence_instant": {
+        "name": "Cadência"
+      },
+      "distance_total": {
+        "name": "Distância total"
+      },
+      "elevation_gain_negative": {
+        "name": "Ganho de elevação negativo"
+      },
+      "elevation_gain_positive": {
+        "name": "Ganho de elevação positivo"
+      },
+      "energy_per_hour": {
+        "name": "Energia por hora"
+      },
+      "energy_per_minute": {
+        "name": "Energia por minuto"
+      },
+      "energy_total": {
+        "name": "Energia total"
+      },
+      "force_on_belt": {
+        "name": "Força na passadeira"
+      },
+      "heart_rate": {
+        "name": "Frequência cardíaca"
+      },
+      "inclination": {
+        "name": "Inclinação"
+      },
+      "metabolic_equivalent": {
+        "name": "Equivalente metabólico"
+      },
+      "movement_direction": {
+        "name": "Direção do movimento",
+        "state": {
+          "forward": "Para a frente",
+          "backward": "Para trás"
+        }
+      },
+      "pace_average": {
+        "name": "Ritmo médio"
+      },
+      "pace_instant": {
+        "name": "Ritmo"
+      },
+      "power_average": {
+        "name": "Potência média"
+      },
+      "power_instant": {
+        "name": "Potência"
+      },
+      "power_output": {
+        "name": "Potência de saída"
+      },
+      "ramp_angle": {
+        "name": "Ângulo da rampa"
+      },
+      "resistance_level": {
+        "name": "Nível de resistência"
+      },
+      "speed_average": {
+        "name": "Velocidade média"
+      },
+      "speed_instant": {
+        "name": "Velocidade"
+      },
+      "split_time_average": {
+        "name": "Tempo de split médio"
+      },
+      "split_time_instant": {
+        "name": "Tempo de split"
+      },
+      "step_count": {
+        "name": "Contagem de passos"
+      },
+      "step_rate_average": {
+        "name": "Cadência de passos média"
+      },
+      "step_rate_instant": {
+        "name": "Cadência de passos"
+      },
+      "stride_count": {
+        "name": "Contagem de passadas"
+      },
+      "stroke_count": {
+        "name": "Contagem de remadas"
+      },
+      "stroke_rate_average": {
+        "name": "Cadência de remadas média"
+      },
+      "stroke_rate_instant": {
+        "name": "Cadência de remadas"
+      },
+      "time_elapsed": {
+        "name": "Tempo decorrido"
+      },
+      "time_remaining": {
+        "name": "Tempo restante"
+      },
+      "training_status": {
+        "name": "Estado",
+        "state": {
+          "other": "Outro",
+          "idle": "Inativo",
+          "warming_up": "A aquecer",
+          "low_intensity_interval": "Intervalo de baixa intensidade",
+          "high_intensity_interval": "Intervalo de alta intensidade",
+          "recovery_interval": "Intervalo de recuperação",
+          "isometric": "Isométrico",
+          "heart_rate_control": "Controlo de frequência cardíaca",
+          "fitness_test": "Teste de fitness",
+          "speed_too_low": "Velocidade demasiado baixa",
+          "speed_too_high": "Velocidade demasiado alta",
+          "cool_down": "Arrefecimento",
+          "watt_control": "Controlo de watts",
+          "manual_mode": "Modo manual",
+          "pre_workout": "Pré-treino",
+          "post_workout": "Pós-treino"
+        }
+      }
+    },
+    "button": {
+      "start": {
+        "name": "Iniciar/retomar"
+      },
+      "stop": {
+        "name": "Parar"
+      },
+      "pause": {
+        "name": "Pausar"
+      },
+      "reset": {
+        "name": "Reiniciar"
+      }
+    },
+    "number": {
+      "target_speed": {
+        "name": "Velocidade"
+      },
+      "target_inclination": {
+        "name": "Inclinação"
+      },
+      "target_resistance": {
+        "name": "Resistência"
+      },
+      "target_power": {
+        "name": "Potência"
+      }
+    },
+    "switch": {
+      "connection": {
+        "name": "Ligação"
+      }
+    }
+  },
+  "selector": {
+    "sensors": {
+      "options": {
+        "cadence_average": "Cadência média",
+        "cadence_instant": "Cadência",
+        "distance_total": "Distância total",
+        "elevation_gain_negative": "Ganho de elevação negativo",
+        "elevation_gain_positive": "Ganho de elevação positivo",
+        "energy_per_hour": "Energia por hora",
+        "energy_per_minute": "Energia por minuto",
+        "energy_total": "Energia total",
+        "force_on_belt": "Força na passadeira",
+        "heart_rate": "Frequência cardíaca",
+        "inclination": "Inclinação",
+        "metabolic_equivalent": "Equivalente metabólico",
+        "movement_direction": "Direção do movimento",
+        "pace_average": "Ritmo médio",
+        "pace_instant": "Ritmo",
+        "power_average": "Potência média",
+        "power_instant": "Potência",
+        "power_output": "Potência de saída",
+        "ramp_angle": "Ângulo da rampa",
+        "resistance_level": "Nível de resistência",
+        "speed_average": "Velocidade média",
+        "speed_instant": "Velocidade",
+        "split_time_average": "Tempo de split médio",
+        "split_time_instant": "Tempo de split",
+        "step_count": "Contagem de passos",
+        "step_rate_average": "Cadência de passos média",
+        "step_rate_instant": "Cadência de passos",
+        "stride_count": "Contagem de passadas",
+        "stroke_count": "Contagem de remadas",
+        "stroke_rate_average": "Cadência de remadas média",
+        "stroke_rate_instant": "Cadência de remadas",
+        "time_elapsed": "Tempo decorrido",
+        "time_remaining": "Tempo restante",
+        "training_status": "Estado do treino"
+      }
+    },
+    "discovery": {
+      "options": {
+        "auto": "Automático (dentro de 30 segundos)",
+        "manual": "Manual (baseado no relatório de funcionalidades)"
+      }
+    }
+  },
+  "device": {
+    "treadmill": {
+      "name": "Passadeira"
+    },
+    "cross_trainer": {
+      "name": "Cross trainer"
+    },
+    "rower": {
+      "name": "Remo"
+    },
+    "indoor_bike": {
+      "name": "Bicicleta indoor"
+    }
+  },
+  "exceptions": {
+    "device_not_found": {
+      "message": "Máquina de fitness não encontrada. Certifique-se de que está ligada e não está a ser utilizada por outra aplicação."
+    },
+    "connection_failed": {
+      "message": "Falha ao ligar à máquina de fitness. Certifique-se de que está ligada e não está a ser utilizada por outra aplicação."
+    },
+    "ftms_error": {
+      "message": "O dispositivo de fitness provavelmente mudou para outro protocolo, como o FitShow. Tente reiniciar o dispositivo."
+    }
+  }
+}

@@ -15,6 +15,13 @@
           "discovery": "Training data discovery mode:"
         }
       },
+      "machine_type": {
+        "title": "Select machine type",
+        "description": "The device **{name}** does not broadcast its machine type. Please select it manually.",
+        "data": {
+          "machine_type": "Machine type:"
+        }
+      },
       "information": {
         "title": "Training data set",
         "description": "Check and, if necessary, change the training data set of your fitness machine. This is a list of sensors created during device initialization. You will be able to change it manually in the future.",
@@ -28,11 +35,22 @@
       "discovering": "Automatic collection of training information...",
       "closing": "Closing connection and saving the data..."
     },
+    "selector": {
+      "machine_type": {
+        "options": {
+          "indoor_bike": "Indoor Bike",
+          "treadmill": "Treadmill",
+          "cross_trainer": "Cross Trainer",
+          "rower": "Rower"
+        }
+      }
+    },
     "abort": {
       "not_supported": "Device not supported.",
       "already_in_progress": "Device setup wizard is already running.",
       "already_configured": "The device is already configured.",
-      "no_devices_found": "No devices found to setup."
+      "no_devices_found": "No devices found to setup.",
+      "connection_failed": "Failed to connect to the device. Make sure it is powered on and in range, then try again."
     }
   },
   "options": {

@@ -1,0 +1,6 @@
+aiohttp
+python-dotenv
+async-timeout
+homeassistant
+voluptuous
+pyftms @ git+https://github.com/netsoft-ruidias/python-pyftms@feat/bodytone
