@@ -7,6 +7,7 @@ import logging
 from typing import Any
 
 import voluptuous as vol
+from bleak.uuids import normalize_uuid_str
 from bluetooth_data_tools import human_readable_name
 from homeassistant.components.bluetooth import (
     BluetoothServiceInfoBleak,
@@ -25,12 +26,24 @@ from homeassistant.core import callback
 from homeassistant.helpers.selector import selector
 from pyftms import (
     FitnessMachine,
+    MachineType,
     NotFitnessMachineError,
     get_client,
     get_machine_type_from_service_data,
 )
 
-from .const import DOMAIN
+from .const import CONF_MACHINE_TYPE, DOMAIN
+
+# Full normalized UUID for the Fitness Machine Service (0x1826)
+_FTMS_SERVICE_UUID = normalize_uuid_str("1826")
+
+# Machine types that can be manually selected (those with a data characteristic)
+_SELECTABLE_MACHINE_TYPES = [
+    MachineType.INDOOR_BIKE,
+    MachineType.TREADMILL,
+    MachineType.CROSS_TRAINER,
+    MachineType.ROWER,
+]
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -121,7 +134,11 @@ class FTMSConfigFlow(ConfigFlow, domain=DOMAIN):
                 get_machine_type_from_service_data(info.advertisement)
 
             except NotFitnessMachineError:
-                continue
+                # Non-standard device: check if it advertises the FTMS service
+                # UUID in service_uuids (e.g. Bodytone DU30 does not include
+                # machine type in service_data).
+                if _FTMS_SERVICE_UUID not in (info.advertisement.service_uuids or ()):
+                    continue
 
             self._discovered_devices[info.address] = info
 
@@ -147,7 +164,9 @@ class FTMSConfigFlow(ConfigFlow, domain=DOMAIN):
             get_machine_type_from_service_data(info.advertisement)
 
         except NotFitnessMachineError:
-            return self.async_abort(reason="not_supported")
+            # Allow non-standard devices that advertise FTMS UUID in service_uuids
+            if _FTMS_SERVICE_UUID not in (info.advertisement.service_uuids or ()):
+                return self.async_abort(reason="not_supported")
 
         await self.async_set_unique_id(info.address, raise_on_progress=True)
         self._abort_if_unique_id_configured()
@@ -163,6 +182,11 @@ class FTMSConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self._discovery_time = 30 if user_input[CONF_DISCOVERY] == "auto" else 0
+            # For non-standard devices (no service data), select machine type first
+            try:
+                self._ftms = get_client(self._ble_info.device, self._ble_info.advertisement)
+            except NotFitnessMachineError:
+                return await self.async_step_machine_type()
             return await self.async_step_ble_request()
 
         # here we know device
@@ -191,18 +215,54 @@ class FTMSConfigFlow(ConfigFlow, domain=DOMAIN):
             description_placeholders=placeholders,
         )
 
+    async def async_step_machine_type(
+        self,
+        user_input: dict[str, Any] | None = None,
+    ) -> ConfigFlowResult:
+        """Ask user to select the machine type for non-standard devices."""
+
+        if user_input is not None:
+            machine_type = MachineType[user_input[CONF_MACHINE_TYPE].upper()]
+            self._ftms = get_client(self._ble_info.device, machine_type)
+            return await self.async_step_ble_request()
+
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_MACHINE_TYPE): selector(
+                    {
+                        "select": {
+                            "options": [mt.name.lower() for mt in _SELECTABLE_MACHINE_TYPES],
+                            "translation_key": CONF_MACHINE_TYPE,
+                        }
+                    }
+                ),
+            }
+        )
+
+        info = self._ble_info
+        placeholders = {"name": human_readable_name(None, info.name, info.address)}
+
+        return self.async_show_form(
+            step_id="machine_type",
+            data_schema=self.add_suggested_values_to_schema(
+                schema, {CONF_MACHINE_TYPE: MachineType.INDOOR_BIKE.name.lower()}
+            ),
+            description_placeholders=placeholders,
+        )
+
     async def async_step_ble_request(
         self,
         user_input: dict[str, Any] | None = None,
     ) -> ConfigFlowResult:
         """Connection and data collection step"""
 
-        if self._ftms is None:
-            info = self._ble_info
-            self._ftms = get_client(info.device, info.advertisement)
+        ftms = self._ftms
+
+        if ftms is None:
+            # Should not happen — ftms must be set before entering this step
+            return self.async_abort(reason="connection_failed")
 
         uncompleted_task: asyncio.Task[None] | None = None
-        ftms = self._ftms
 
         if not uncompleted_task:
             if not self._task1:
@@ -261,7 +321,10 @@ class FTMSConfigFlow(ConfigFlow, domain=DOMAIN):
 
             return self.async_create_entry(
                 title=" ".join((s1, s2, s3)),
-                data={CONF_ADDRESS: self._ftms.address},
+                data={
+                    CONF_ADDRESS: self._ftms.address,
+                    CONF_MACHINE_TYPE: self._ftms.machine_type.value,
+                },
                 options={CONF_SENSORS: user_input[CONF_SENSORS]},
             )
 

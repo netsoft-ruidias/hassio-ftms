@@ -17,7 +17,7 @@ from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
 
-from .const import DOMAIN
+from .const import CONF_MACHINE_TYPE, DOMAIN
 from .coordinator import DataCoordinator
 from .models import FtmsData
 
@@ -57,12 +57,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: FtmsConfigEntry) -> bool
         if ftms_.need_connect:
             hass.config_entries.async_schedule_reload(entry.entry_id)
 
+    machine_type_value = entry.data.get(CONF_MACHINE_TYPE)
+
     try:
-        ftms = pyftms.get_client(
-            srv_info.device,
-            srv_info.advertisement,
-            on_disconnect=_on_disconnect,
-        )
+        if machine_type_value is not None:
+            ftms = pyftms.get_client(
+                srv_info.device,
+                pyftms.MachineType(machine_type_value),
+                on_disconnect=_on_disconnect,
+            )
+        else:
+            ftms = pyftms.get_client(
+                srv_info.device,
+                srv_info.advertisement,
+                on_disconnect=_on_disconnect,
+            )
 
     except pyftms.NotFitnessMachineError:
         raise ConfigEntryNotReady(translation_key="ftms_error")

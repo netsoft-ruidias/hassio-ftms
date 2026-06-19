@@ -1,0 +1,22 @@
+
+services:
+  homeassistant:
+    build:
+      context: .
+      args:
+        HA_VERSION: stable
+    container_name: homeassistant-ftms
+    restart: unless-stopped
+    environment:
+      TZ: Etc/UTC
+    ports:
+      - "8123:8123"
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ./config:/config
+      - ./custom_components:/config/custom_components
+      - ./requirements.txt:/config/requirements.txt:ro
+      - /run/dbus:/run/dbus
